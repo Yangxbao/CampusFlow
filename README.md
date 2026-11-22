@@ -12,6 +12,7 @@
 [![MySQL](https://img.shields.io/badge/MySQL-8.0-4479a1?logo=mysql&logoColor=white)](https://www.mysql.com/)
 [![Redis](https://img.shields.io/badge/Redis-Lua%20%2B%20Redisson-DC382D?logo=redis&logoColor=white)](https://redis.io/)
 [![RocketMQ](https://img.shields.io/badge/RocketMQ-4.9-orange?logo=apacherocketmq&logoColor=white)](https://rocketmq.apache.org/)
+[![CI](https://img.shields.io/badge/CI-passing-success?logo=githubactions&logoColor=white)](https://github.com/Yangxbao/CampusFlow/actions)
 [![Tests](https://img.shields.io/badge/Tests-89%20passing-success)](#-测试体系)
 [![License](https://img.shields.io/badge/License-MIT-blue)](LICENSE)
 

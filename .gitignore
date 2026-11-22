@@ -1,0 +1,39 @@
+# ===== Java / Maven =====
+target/
+*.class
+*.jar
+!.mvn/wrapper/maven-wrapper.jar
+fl agent*.dump
+*.log
+logs/
+app-startup.log
+dev-server.log
+
+# ===== IDE =====
+.idea/
+*.iml
+.vscode/
+.classpath
+.project
+.settings/
+
+# ===== Node / 前端 =====
+node_modules/
+dist/
+*.local
+
+# ===== 运行时数据 =====
+data/
+*.csv.tmp
+load-test/reports/*.jtl
+load-test/reports/scenario-*/
+load-test/data/tokens.csv
+
+# ===== 环境与密钥 =====
+.env
+*.pem
+*.keystore
+
+# ===== 系统 =====
+.DS_Store
+Thumbs.db

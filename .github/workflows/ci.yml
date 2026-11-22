@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  backend:
+    name: Backend (unit & lab tests)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+      - name: Compile all modules
+        run: mvn -B -pl backend/campusflow-server -am compile
+      - name: Unit tests (no middleware required)
+        run: mvn -B -pl backend/campusflow-common,backend/concurrency-lab,backend/jvm-lab test
+
+  frontend:
+    name: Frontend (type check & build)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install deps
+        working-directory: frontend
+        run: npm install --no-audit --no-fund
+      - name: Type check & build
+        working-directory: frontend
+        run: |
+          npx vue-tsc --noEmit
+          npm run build

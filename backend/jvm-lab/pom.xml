@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.campusflow</groupId>
+        <artifactId>campusflow-parent</artifactId>
+        <version>1.0.0</version>
+        <relativePath>../../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>jvm-lab</artifactId>
+    <name>CampusFlow JVM Lab</name>
+    <description>JVM 实验模块：堆/栈内存、类加载、GC 日志、G1/ZGC 对比、OOM、死锁、jstack/jmap/jcmd 诊断</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!--
+                测试 JVM 安全限制：
+                1. -Xmx256m 让 HeapOverflowLabTest 在子线程中几秒内真实触发 OOM 并 catch（不会拖满宿主机内存）；
+                2. -Dfile.encoding=UTF-8 保证 Windows 下中文输出不乱码；
+                3. -Xss1m 与生产常见默认一致，StackOverflowLabTest 据此对比不同 stackSize 的递归深度。
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <argLine>-Xmx256m -Xss1m -Dfile.encoding=UTF-8</argLine>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

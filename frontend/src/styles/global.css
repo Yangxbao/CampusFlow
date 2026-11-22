@@ -1,0 +1,83 @@
+/* 校园活动平台 全局样式：现代校园数字服务平台风格（清爽蓝绿 + 卡片化） */
+:root {
+  --cf-primary: #4f6ef2;
+  --cf-primary-dark: #3d55d0;
+  --cf-success: #22a06b;
+  --cf-warning: #f59e0b;
+  --cf-danger: #ef4444;
+  --cf-bg: #f5f7fb;
+  --cf-card: #ffffff;
+  --cf-text: #1f2937;
+  --cf-text-light: #6b7280;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', Arial, sans-serif;
+  background: var(--cf-bg);
+  color: var(--cf-text);
+}
+
+.page-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px 24px;
+}
+
+.card {
+  background: var(--cf-card);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(16, 24, 40, 0.06);
+}
+
+.page-title {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0 0 16px;
+}
+
+.text-light {
+  color: var(--cf-text-light);
+  font-size: 13px;
+}
+
+.flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.mt16 { margin-top: 16px; }
+.mb16 { margin-bottom: 16px; }
+
+/* Element Plus 细节微调 */
+.el-button--primary {
+  --el-button-bg-color: var(--cf-primary);
+  --el-button-border-color: var(--cf-primary);
+  --el-button-hover-bg-color: var(--cf-primary-dark);
+  --el-button-hover-border-color: var(--cf-primary-dark);
+}
+
+/* ===== 移动端基础适配 ===== */
+@media (max-width: 768px) {
+  .page-container {
+    padding: 12px 14px;
+  }
+  .page-title {
+    font-size: 17px;
+    margin-bottom: 12px;
+  }
+  .card {
+    padding: 14px;
+    border-radius: 10px;
+  }
+}

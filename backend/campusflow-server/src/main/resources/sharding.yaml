@@ -1,0 +1,54 @@
+# =====================================================================
+# ShardingSphere-JDBC 5.4.1 分片配置
+# 逻辑表：registration -> 物理表 campusflow_ds0.registration / campusflow_ds1.registration
+# 分片键：user_id（按用户维度分片，用户维度查询直达单库；活动维度统计查询为广播路由）
+# 全局唯一 ID：应用层雪花算法（MP ASSIGN_ID），分片键不含 ID 也能保证全局唯一
+# =====================================================================
+databaseName: campusflow_sharding
+
+mode:
+  type: Standalone
+  repository:
+    type: JDBC
+
+dataSources:
+  ds_0:
+    dataSourceClassName: com.zaxxer.hikari.HikariDataSource
+    driverClassName: com.mysql.cj.jdbc.Driver
+    jdbcUrl: jdbc:mysql://${MYSQL_HOST:127.0.0.1}:3306/campusflow_ds0?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
+    username: ${MYSQL_USERNAME:root}
+    password: ${MYSQL_PASSWORD:1234}
+    maximumPoolSize: 10
+    minimumIdle: 2
+  ds_1:
+    dataSourceClassName: com.zaxxer.hikari.HikariDataSource
+    driverClassName: com.mysql.cj.jdbc.Driver
+    jdbcUrl: jdbc:mysql://${MYSQL_HOST:127.0.0.1}:3306/campusflow_ds1?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
+    username: ${MYSQL_USERNAME:root}
+    password: ${MYSQL_PASSWORD:1234}
+    maximumPoolSize: 10
+    minimumIdle: 2
+
+rules:
+  - !SHARDING
+    tables:
+      registration:
+        actualDataNodes: ds_${0..1}.registration
+        databaseStrategy:
+          standard:
+            shardingColumn: user_id
+            shardingAlgorithmName: registration_user_mod
+        keyGenerateStrategy:
+          column: id
+          keyGeneratorName: snowflake
+    shardingAlgorithms:
+      registration_user_mod:
+        type: INLINE
+        props:
+          algorithm-expression: ds_${user_id % 2}
+    keyGenerators:
+      snowflake:
+        type: SNOWFLAKE
+
+props:
+  sql-show: false   # 打开可观察路由日志（ds0/ds1 广播与定向）

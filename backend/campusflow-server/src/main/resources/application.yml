@@ -1,0 +1,94 @@
+spring:
+  application:
+    name: campusflow-server
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:local}
+  main:
+    # 多模块 fat-jar 下嵌套 jar 会被以两种资源形式扫描到同一 @Configuration 类（nested: 与 jar:nested:），
+    # 同名同类型 Bean 定义覆盖是安全的；展开式 classpath 运行时不会触发
+    allow-bean-definition-overriding: true
+  servlet:
+    multipart:
+      # 头像上传限制（服务端 LocalFileStorageService 二次校验大小与魔数）
+      max-file-size: 2MB
+      max-request-size: 4MB
+
+server:
+  port: 8080
+  servlet:
+    encoding:
+      charset: UTF-8
+      force: true
+
+# ===== MyBatis-Plus =====
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+  global-config:
+    banner: false
+    db-config:
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+# ===== Knife4j / OpenAPI =====
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+knife4j:
+  enable: true
+  setting:
+    language: zh_cn
+
+# ===== Actuator（压测期指标观测） =====
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  metrics:
+    distribution:
+      percentiles-histogram:
+        http.server.requests: true
+
+# ===== CampusFlow 业务参数 =====
+campusflow:
+  jwt:
+    # 生产必须通过环境变量 JWT_SECRET 注入（>=32 字节）
+    secret: ${JWT_SECRET:campusflow-dev-secret-please-change-me-32bytes!!}
+    expire-hours: 24
+    issuer: campusflow
+  reservation:
+    reserve-ttl-minutes: 15
+    waitlist-confirm-minutes: 30
+    reservation-max-retry: 5
+  signup:
+    rate-limit-window-seconds: 10
+    rate-limit-max: 8
+  stock:
+    reconcile-threshold: 3
+    preload-lock-wait-seconds: 5
+  mq:
+    name-server: ${ROCKETMQ_NAMESERVER:127.0.0.1:9876}
+    producer-group: campusflow-producer-group
+    send-timeout-ms: 3000
+    send-retry-times: 2
+    consumer-max-reconsume: 5
+    message-retry-base-seconds: 30
+    message-max-retry: 8
+    consume-thread-min: 5
+    consume-thread-max: 20
+  cache:
+    local-max-size: 500
+    local-ttl-seconds: 30
+    redis-activity-ttl-minutes: 30
+    bloom-expected-insertions: 100000
+    bloom-fpp: 0.01
+  export:
+    dir: ${CAMPUSFLOW_EXPORT_DIR:./data/exports}
+
+logging:
+  config: classpath:logback-spring.xml

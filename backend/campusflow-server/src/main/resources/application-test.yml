@@ -1,0 +1,23 @@
+# ===== 集成测试环境：与 local 相同中间件，但独立数据库 + 关闭 Flyway 自动执行（测试基类自建 schema） =====
+spring:
+  datasource:
+    url: jdbc:mysql://${MYSQL_HOST:127.0.0.1}:${MYSQL_PORT:3306}/${MYSQL_DB:campusflow_test}?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true&rewriteBatchedStatements=true
+    username: ${MYSQL_USERNAME:root}
+    password: ${MYSQL_PASSWORD:1234}
+  flyway:
+    enabled: false
+  data:
+    redis:
+      host: ${REDIS_HOST:192.168.100.128}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:123321}
+      database: 1
+
+campusflow:
+  jwt:
+    secret: campusflow-test-secret-32bytes-for-it!!!
+  seed:
+    enabled: false   # 集成测试自建数据
+  mq:
+    name-server: ${ROCKETMQ_NAMESERVER:192.168.100.128:9876}
+    group-suffix: it   # 与运行中的应用实例隔离消费组，防止 Broker 负载均衡瓜分测试消息

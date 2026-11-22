@@ -1,0 +1,14 @@
+# ===== 分库分表高级模式（独立启动：--spring.profiles.active=sharding）=====
+# 逻辑库 campusflow_sharding -> 物理库 campusflow_ds0 / campusflow_ds1
+# 分片对象：registration（报名记录）；分片键：user_id（MOD 2）
+# 说明：默认运行模式（local）不加载本文件，两者通过启动参数严格区分
+spring:
+  datasource:
+    driver-class-name: org.apache.shardingsphere.driver.ShardingSphereDriver
+    url: jdbc:shardingsphere:classpath:sharding.yaml
+  flyway:
+    enabled: false   # 物理分片库 schema 由 scripts/init-sharding-db.sql 独立初始化
+
+campusflow:
+  mq:
+    name-server: ${ROCKETMQ_NAMESERVER:192.168.100.128:9876}
